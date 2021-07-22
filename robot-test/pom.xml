@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>robot</artifactId>
+        <groupId>ru.stoupin</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>robot-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <downloadSources>true</downloadSources>
+        <downloadJavadocs>true</downloadJavadocs>
+        <java.version>1.8</java.version>
+
+        <browser>jbrowser</browser>
+        <downloadWebDriver>True</downloadWebDriver>
+    </properties>
+
+
+
+    <dependencies>
+        <!--
+                <dependency>
+                    <groupId>org.robotframework</groupId>
+                    <artifactId>javalib-core</artifactId>
+                    <version>1.2.1</version>
+                </dependency>
+         -->
+
+        <dependency>
+            <groupId>ru.stoupin</groupId>
+            <artifactId>my-robot-lib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+
+        </dependency>
+
+        <dependency>
+            <groupId>org.robotframework</groupId>
+            <artifactId>robotframework</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.github.hi-fi</groupId>
+            <artifactId>robotframework-seleniumlibrary</artifactId>
+            <version>4.0.0-alpha-2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.marketsquare</groupId>
+            <artifactId>robotframework-httprequestlibrary</artifactId>
+            <version>0.0.17</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.wuokko.robot/robotframework-rest-java -->
+        <dependency>
+            <groupId>org.wuokko.robot</groupId>
+            <artifactId>robotframework-rest-java</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+
+        <plugins>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <webdriver.chrome.driver>${project.build.directory}\location\binaries\windows\googlechrome\64bit\chromedriver.exe</webdriver.chrome.driver>
+                    </systemPropertyVariables>
+
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.lazerycode.selenium</groupId>
+                <artifactId>driver-binary-downloader-maven-plugin</artifactId>
+                <version>1.0.18</version>
+                <configuration>
+
+                    <rootStandaloneServerDirectory>${project.basedir}/target/location/binaries</rootStandaloneServerDirectory>
+
+                    <downloadedZipFileDirectory>${project.basedir}/target/location/zips</downloadedZipFileDirectory>
+                    <customRepositoryMap>${project.basedir}/src/test/resources/RepositoryMap.xml</customRepositoryMap>
+                    <operatingSystems>
+                        <windows>true</windows>
+                    </operatingSystems>
+                    <sixtyFourBitBinaries>true</sixtyFourBitBinaries>
+
+                    <throwExceptionIfSpecifiedVersionIsNotFound>true</throwExceptionIfSpecifiedVersionIsNotFound>
+                    <overwriteFilesThatExist>true</overwriteFilesThatExist>
+
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>selenium</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.robotframework</groupId>
+                <artifactId>robotframework-maven-plugin</artifactId>
+                <version>2.0.1</version>
+                <configuration>
+                    <libdoc>
+                        <outputFile>MyLib.html</outputFile>
+                        <libraryOrResourceFile>ru.stoupin.MyRobotLib</libraryOrResourceFile>
+                    </libdoc>
+                    <testdoc>
+                        <outputFile>*.html</outputFile>
+                        <dataSourceFile>/src/test/robotframework/**/*.robot</dataSourceFile>
+                    </testdoc>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>libdoc</goal>
+                            <goal>testdoc</goal>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+</project>
